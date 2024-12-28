@@ -1,17 +1,17 @@
 import streamlit as st
-from app.data import data
+
+from data.prologue import prologue_data
+from data.the_truth import truth_data
+from data.skills import skills_data
 
 HEIGHT= 400
 
 def render_lifebook_page():
-    content = data
+    content = prologue_data + truth_data + skills_data
 
     # First split by major sections (####)
     sections = content.split("####")
     
-    # Get title from first section
-    title = sections[0].strip()
-
     # Create a nested dictionary for tabs and their categories
     tab_dict = {}
     for section in sections[1:]:  # Skip the first section (title)
@@ -33,16 +33,21 @@ def render_lifebook_page():
                 
                 # Create dictionary of subsections
                 subsection_dict = {}
-                for subsection in subsections[1:]:  # Skip first empty split
-                    if not subsection.strip():
-                        continue
-                        
-                    # Split first line for subsection title
-                    sub_lines = subsection.split("\n", 1)
-                    if len(sub_lines) == 2:
-                        sub_title = sub_lines[0].strip()
-                        sub_content = sub_lines[1]  # Keep original formatting
-                        subsection_dict[sub_title] = sub_content
+                
+                # If there are no * markers, use the category name as the subtitle
+                if len(subsections) <= 1:
+                    subsection_dict[category_name] = content.strip()
+                else:
+                    # Process subsections as before
+                    for subsection in subsections[1:]:
+                        if not subsection.strip():
+                            continue
+                            
+                        sub_lines = subsection.split("\n", 1)
+                        if len(sub_lines) == 2:
+                            sub_title = sub_lines[0].strip()
+                            sub_content = sub_lines[1]
+                            subsection_dict[sub_title] = sub_content
 
                 # Create tab if it doesn't exist
                 if tab_name not in tab_dict:
@@ -59,17 +64,24 @@ def render_lifebook_page():
         with tabs[idx]:
             # Only create columns if there's more than one category
             if len(categories) > 1:
-                col1, col2 = st.columns([25, 75])
-                with col1:
+                col_category, col_display = st.columns([25, 75])
+                with col_category:
                     with st.container(border=True, height=HEIGHT):
-                        category = st.radio(
+                        # Create numbered options for the radio buttons
+                        numbered_options = [f"{i+1:02d} - {cat}" for i, cat in enumerate(categories.keys())]
+                        # Create a mapping from numbered options back to original categories
+                        options_map = {numbered: orig for numbered, orig in zip(numbered_options, categories.keys())}
+                        
+                        numbered_category = st.radio(
                             label=f"Select {tab_name} Category",
-                            options=list(categories.keys()),
+                            options=numbered_options,
                             label_visibility="collapsed",
                         )
+                        # Convert back to original category name for lookup
+                        category = options_map[numbered_category]
                 
                 # Display content in the second column
-                with col2:
+                with col_display:
                     with st.container(border=True, height=HEIGHT):
                         subsections = categories[category]
                         if isinstance(subsections, dict) and len(subsections) > 0:
