@@ -1,8 +1,8 @@
 import streamlit as st
 
-from data.prologue import prologue_data
-from data.the_truth import truth_data
-from data.skills import skills_data
+from notes.prologue import prologue_data
+from notes.the_truth import truth_data
+from notes.skills import skills_data
 
 HEIGHT= 400
 
