@@ -26,9 +26,6 @@ habits_data = """
 * Reflection
 - Do journal and update this blog regularly.
 
-* Gratitude Practice
-- Reflect daily on things you're grateful for to cultivate positivity and contentment.
-
 * Decluttering
 - Get rid of things that are not needed.
 - Regularly simplify your physical and mental space to reduce distractions and stress.
@@ -57,6 +54,9 @@ habits_data = """
 #### Habits | Mental Health
 * Letting go
 - Work is endless. Do minimal viable
+
+* Gratitude Practice
+- Reflect daily on things you're grateful for to cultivate positivity and contentment.
 
 * Meditation
 - Try to meditate every day.

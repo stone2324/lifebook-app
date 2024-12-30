@@ -8,7 +8,7 @@ from notes.d_personal_skills import personal_skills_data
 from notes.e_interpersonal_skills import interpersonal_skills_data
 from notes.f_techical_skills import technical_skills_data
 
-HEIGHT = 420
+HEIGHT = 480
 SUBHEADER_SIZE = "####"
 
 def format_content(subcontent, subtitle):
@@ -123,7 +123,7 @@ def render_lifebook_page():
                 continue
 
             # Display multiple categories with columns
-            col_category, col_display = st.columns([25, 75])
+            col_category, col_display = st.columns([20, 80])
             with col_category:
                 with st.container(border=True, height=HEIGHT):
                     with stylable_container.stylable_container(
