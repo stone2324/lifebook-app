@@ -2,7 +2,7 @@ prologue_data = """
 
 #### Prologue | Prologue
 
-* Stone's Lifebook - Prologue
+* Stone's Lifebook
 
 &NewLine;
 

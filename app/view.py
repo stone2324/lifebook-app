@@ -1,3 +1,5 @@
+# Tabs, Categories, SubCategories, Content
+
 import streamlit as st
 from streamlit_extras import stylable_container
 
@@ -30,36 +32,29 @@ def format_content(subcontent, subtitle):
 
 def display_subsections(subsections):
     """Display subsections either as tabs or single content."""
-    if len(subsections) <= 1:
-        # Display single subsection
-        subtitle, subcontent = next(iter(subsections.items()))
-        with stylable_container.stylable_container(
-            key="content_container",
-            css_styles="{padding: 0px 10px;}"
-        ):
-            st.markdown(format_content(subcontent, subtitle))
-        return
 
     # Display multiple subsections as tabs
     with stylable_container.stylable_container(
         key="tabs_container",
-        css_styles="{padding: 0px 10px;}"
+        css_styles="{padding: 20px 20px;}"
     ):
-        subtabs = st.tabs(list(subsections.keys()))
-        for subtab_idx, (subtitle, subcontent) in enumerate(subsections.items()):
-            with subtabs[subtab_idx]:
-                st.markdown(format_content(subcontent, subtitle))
+
+        if len(subsections) <= 1:
+            # Display single subsection
+            subtitle, subcontent = next(iter(subsections.items()))
+            st.markdown(format_content(subcontent, subtitle))
+        else:
+            subtabs = st.tabs(list(subsections.keys()))
+            for subtab_idx, (subtitle, subcontent) in enumerate(subsections.items()):
+                with subtabs[subtab_idx]:
+                    st.markdown(format_content(subcontent, subtitle))
 
 def display_category_content(categories, category):
     """Display the content for a selected category."""
     with st.container(border=True, height=HEIGHT):
-        with stylable_container.stylable_container(
-            key=f"content_container_{category}",
-            css_styles="{padding: 0px 10px;}"
-        ):
-            subsections = categories[category]
-            if isinstance(subsections, dict) and subsections:
-                display_subsections(subsections)
+        subsections = categories[category]
+        if isinstance(subsections, dict) and subsections:
+            display_subsections(subsections)
 
 def parse_content(content):
     """Parse the content into a nested dictionary of tabs and categories."""
@@ -95,7 +90,8 @@ def parse_content(content):
                 sub_lines = subsection.split("\n", 1)
                 if len(sub_lines) == 2:
                     sub_title, sub_content = sub_lines
-                    subsection_dict[sub_title.strip()] = sub_content
+                    sub_title = ' '.join(sub_title.split())
+                    subsection_dict[sub_title] = sub_content
 
         # Add to tab dictionary
         if tab_name not in tab_dict:
